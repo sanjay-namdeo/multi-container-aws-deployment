@@ -1,0 +1,20 @@
+sudo: required
+services: docker
+
+before_install:
+  - docker build -t sanjaynamdeo/multi-container-client -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run sanjaynamdeo/multi-container-client npm run test -- --coverage
+
+after_success:
+  - docker build -t sanjaynamdeo/multi-container-client ./client
+  - docker build -t sanjaynamdeo/multi-container-nginx ./nginx
+  - docker build -t sanjaynamdeo/multi-container-server ./server
+  - docker build -t sanjaynamdeo/multi-container-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push sanjaynamdeo/multi-container-client
+  - docker push sanjaynamdeo/multi-container-nginx
+  - docker push sanjaynamdeo/multi-container-server
+  - docker push sanjaynamdeo/multi-container-worker
+
