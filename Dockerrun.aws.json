@@ -24,7 +24,7 @@
         },
         {
             "name": "ngnix",
-            "image": "sanjaynamdeo/multi-container-server",
+            "image": "sanjaynamdeo/multi-container-ngnix",
             "hostname": "nginx",
             "essential": true,
             "memory": 128,
